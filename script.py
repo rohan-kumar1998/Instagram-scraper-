@@ -21,7 +21,7 @@ for i in range(page_count):
     edges = data['graphql']['hashtag']['edge_hashtag_to_media']['edges'] # list with posts
     
     for item in edges:
-        if(item not in posts):
+        if(item['node']['shortcode'] not in posts):
             posts.append(item['node']['shortcode'])
     time.sleep(1) # insurance to not reach a time limit
 print(len(posts))
