@@ -4,7 +4,7 @@ import os
 import requests
 import time
 import json
-#import csv
+import csv
 
 posts = []
 
