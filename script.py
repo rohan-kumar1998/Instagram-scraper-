@@ -55,7 +55,6 @@ with open('data.csv', 'w') as csvfile:
         text_data = text_data.split('#')
         hashtags = ""
         image_url = post_data['entry_data']['PostPage'][0]['graphql']['shortcode_media']['display_url']
-        text = text_data[0]
         for j in range(min(len(text_data), 6)):
             if(j > 0):
                 tmp = text_data[j]
@@ -64,6 +63,7 @@ with open('data.csv', 'w') as csvfile:
                     hashtags += str(" ") + text_data[j]                 
                 else: 
                     text_data[0] += str(' ') + text_data[j]
+        text = text_data[0]
         urlretrieve(str(image_url),image_DIR)
         image_id = post
         try: 
