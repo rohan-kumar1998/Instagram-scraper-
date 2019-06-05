@@ -23,7 +23,7 @@ for i in range(page_count):
     for item in edges:
         if(item not in posts):
             posts.append(item['node']['shortcode'])
-    time.sleep(1) # insurence to not reach a time limit
+    time.sleep(1) # insurance to not reach a time limit
 print(len(posts))
 
 DIR = 'pictures'
