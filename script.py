@@ -84,8 +84,8 @@ with open('data.csv', 'w') as csvfile:
         print(text) #add try and except for no text -> do later. 
         print(hashtags)
         print(comments)
-        fields = [str(i+1).encode('utf-8'), text.encode('utf-8'), hashtags.encode('utf-8')] 
+        fields = [str(i+1), text, hashtags] 
         for j in comments:
-            fields.append(j.encode('utf-8'))
+            fields.append(j)
         # creating a csv writer object 
         csvwriter.writerow(fields)
