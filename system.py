@@ -1,6 +1,9 @@
 import re
 from itertools import groupby
 import os
+from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
+import gensim.downloader as api
 
 cleanup = re.compile(r'[^a-z0-9]')
 
@@ -59,12 +62,36 @@ def edits1(word):
 def edits2(word): 
     return (e2 for e1 in edits1(word) for e2 in edits1(e1))
 
-x = y = 'ngram.' #enter any n-gram with correct spelling or unigram with correct/wrong spelling 
+x = y = 'bodyshaming' #enter any n-gram with correct spelling or unigram with correct/wrong spelling 
 
 #print(candidates(x))
 try:
     x = correction(x)
 except:
     x = x    
-print(' '.join(segment(x)[0]))
-print(' '.join(segment(y)[0]))   
+x = ' '.join(segment(x)[0])
+y = ' '.join(segment(y)[0])
+print(x)
+print(y)
+
+fasttext_model300 = api.load('fasttext-wiki-news-subwords-300')
+
+def sentence_vec(sentence, model, emb_size, vocab):
+    nwords = 0
+    sen_emb = np.zeros((emb_size), dtype = "float32")
+    for word in sentence:
+        if word in vocab:
+            nwords = nwords+1 
+            sen_emb = np.add(sen_emb, model[word])
+    if nwords > 0:
+        sen_emb = np.divide(sen_emb, nwords)
+    return sen_emb
+
+sentence_1 = y
+sentence_1_avg_vector = sentence_vec(sentence_1.split(), model=model, emb_size=300, vocab = model.vocab)
+
+sentence_2 = 'body issues'
+sentence_2_avg_vector = sentence_vec(sentence_2.split(), model=model, emb_size=300, vocab = model.vocab)
+
+sen1_sen2_similarity =  cosine_similarity(sentence_1_avg_vector.reshape(1,-1),sentence_2_avg_vector.reshape(1,-1))
+print(sen1_sen2_similarity) 
