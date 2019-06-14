@@ -95,3 +95,37 @@ sentence_2_avg_vector = sentence_vec(sentence_2.split(), model=model, emb_size=3
 
 sen1_sen2_similarity =  cosine_similarity(sentence_1_avg_vector.reshape(1,-1),sentence_2_avg_vector.reshape(1,-1))
 print(sen1_sen2_similarity) 
+
+keyword='sad'
+url='https://www.instagram.com/web/search/topsearch/?context=blended&query={0}&__a=1'.format(keyword)
+r=requests.get(url)
+data=json.loads(r.text)
+hashtags=[data['hashtags'][i]['hashtag']['name'] for i in range(len(data['hashtags']))]
+#with open('hashtags.json','w') as outfile:
+#    json.dump(hashtags,outfile)
+
+for tags in hashtags:
+    print(tags)
+sentence_1 = keyword
+sentence_1_avg_vector = sentence_vec(sentence_1.split(), model=model, emb_size=300, vocab = model.vocab)
+
+for tag in hashtags:
+    x = y = tag
+    try:
+        x = correction(x)
+    except:
+        x = x    
+    x = segment(x)[0]
+    y = segment(y)[0]
+    if len(x) < len(y):
+        #print(' '.join(x))
+        sentence_2 = ' '.join(x)
+    else:
+        #print(' '.join(y))
+        sentence_2 = ' '.join(y)
+    
+    sentence_2_avg_vector = sentence_vec(sentence_2.split(), model=model, emb_size=300, vocab = model.vocab)
+    sen1_sen2_similarity =  cosine_similarity(sentence_1_avg_vector.reshape(1,-1),sentence_2_avg_vector.reshape(1,-1))
+    if(sen1_sen2_similarity > 0.5):
+        #print(sentence_2)
+        print(''.join(sentence_2.split(' ')))
