@@ -74,7 +74,7 @@ y = ' '.join(segment(y)[0])
 print(x)
 print(y)
 
-fasttext_model300 = api.load('fasttext-wiki-news-subwords-300')
+model = api.load('fasttext-wiki-news-subwords-300')
 
 def sentence_vec(sentence, model, emb_size, vocab):
     nwords = 0
